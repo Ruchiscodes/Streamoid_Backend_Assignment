@@ -101,7 +101,7 @@ curl -X POST -F "file=@products1.csv" http://localhost:8000/upload
 
 ---
 
-## 🛡️ Business Validation Rules
+##  Business Validation Rules
 
 To ensure data integrity, every uploaded row must pass the following checks:
 
@@ -112,37 +112,47 @@ To ensure data integrity, every uploaded row must pass the following checks:
 
 
 * **Inventory:** The `quantity` must be a non-negative integer ().
-
-
-
 ---
-## Execution & Verification Results
 
-I have verified the implementation by running the following test cases against the local server.
+## **Execution & Verification Results**
 
-**1. CSV Bulk Upload & Validation**
+I have rigorously verified the implementation against the local server to ensure all business logic and API requirements are met
 
-The service successfully parsed and validated the product catalog.
+
+**1. Bulk CSV Upload & Validation**
+
+The service successfully parses product catalogs and enforces validation rules: price <= mrp, quantity >= 0, and mandatory field checks .
+
+Command:
+
+Bash
+
+curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload
+Response:
+```
+JSON
+
+{
+  "stored": 20,
+  "failed": []
+}
 
 ```
-Command: curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload 
-
-Output: JSON{"stored": 20, "failed": []}
-
-```
-
-**Observation**: All 20 items passed the integrity and business rules (Price $\le$ MRP, Quantity $\ge$ 0)
+Observation: All 20 items passed the integrity and business rules .
 
 **2. Product Listing with Pagination**
 
-The API efficiently handles large datasets using limit and page parameters
+The API handles large datasets efficiently by using page and limit parameters.
 
-**3.Command:**
+Command:
 
- curl.exe "http://localhost:8000/products?page=1&limit=2"
+curl.exe "http://localhost:8000/products?page=1&limit=2"
 
+Response:
 ```
-Output:JSON[
+JSON
+
+[
   {
     "sku": "TSHIRT-001",
     "name": "Cotton Tee",
@@ -166,37 +176,36 @@ Output:JSON[
 ]
 ```
 
+**3. Advanced Filtering**
 
-3. Advanced Filtering 
+The search endpoint supports multiple simultaneous filters: Brand, Color, and Price Range 
 
-Verified that multiple filters (Brand + Price Range) can be applied simultaneously.
+Command:
 
-Command: curl.exe "http://localhost:8000/products/search?brand=BloomWear&maxPrice=2500" 
+curl.exe "http://localhost:8000/products/search?brand=BloomWear&maxPrice=2500"
 
+
+Response:
+```
+JSON
+
+[
+  {
+    "sku": "DRESS-PNK-S",
+    "name": "Floral Summer Dress",
+    "brand": "BloomWear",
+    "color": "Pink",
+    "size": "S",
+    "mrp": 2499.0,
+    "price": 2199.0,
+    "quantity": 10
+  }
+]
 
 ```
-**Output:JSON**[
-  {"sku":"DRESS-PNK-S",
-  "name":"Floral Summer Dress",
-  "brand":"BloomWear",
-  "color":"Pink",
-  "size":"S",
-  "mrp":2499.0,
-  "price":2199.0,
-  "quantity":10},
-
-  {"sku":"DRESS-YLW-M",
-  "name":"Floral Summer Dress",
-  "brand":"BloomWear",
-  "color":"Yellow",
-  "size":"M",
-  "mrp":2499.0,
-  "price":1999.0,
-  "quantity":7}]
-```
-
-
 ---
+
+
 ## Quality Assurance
 
 Quality and reliability are central to this implementation. I have included a comprehensive unit test suite to verify the CSV parser, validation logic, and search functionality.
