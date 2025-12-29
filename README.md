@@ -206,17 +206,40 @@ JSON
 ---
 
 
-## Quality Assurance
 
-Quality and reliability are central to this implementation. I have included a comprehensive unit test suite to verify the CSV parser, validation logic, and search functionality.
 
-**Run the tests:**
+## Automated Testing Suite
 
-```bash
+I have implemented a comprehensive test suite using pytest to ensure code reliability and correctness of business logic.
+
+Tests Included:
+
+CSV Parsing: Verifies that the service correctly handles different CSV structures.
+
+Data Validation: Confirms that rules like price <= mrp and quantity >= 0 are strictly enforced 
+
+Search Logic: Ensures filters for brand, color, and price range return accurate subsets of data 
+
+
+Run Tests:
+```
 pytest app/tests.py
-
 ```
 
+## Dockerized Environment
+
+To ensure the application runs consistently across any environment, the solution is fully containerized.
+
+
+Dockerfile: Sets up the Python 3.10 environment and installs all dependencies.
+
+Docker Compose: Orchestrates the FastAPI service and the database for easy one-command deployment.
+
+Deployment:
+```
+docker-compose up --build .
+
+```
 ---
 
 
