@@ -122,7 +122,7 @@ I have verified the implementation by running the following test cases against t
 
 1. CSV Bulk Upload & ValidationThe service successfully parsed and validated the product catalog.
 
-Command: curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload 1
+**Command**: curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload 1
 
 Output:JSON{"stored": 20, "failed": []}
 
