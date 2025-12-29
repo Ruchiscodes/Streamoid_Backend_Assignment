@@ -28,7 +28,7 @@ This solution is fully dockerized to ensure it runs consistently across any envi
 
 1. **Build the image:**
 ```bash
-docker build -t streamoid-catalog .
+docker build -t streamoid-catalog 
 
 ```
 
@@ -120,20 +120,28 @@ To ensure data integrity, every uploaded row must pass the following checks:
 
 I have verified the implementation by running the following test cases against the local server.
 
-1. CSV Bulk Upload & ValidationThe service successfully parsed and validated the product catalog.
+**1. CSV Bulk Upload & Validation**
 
-**Command**: curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload 1
+The service successfully parsed and validated the product catalog.
 
-Output:JSON{"stored": 20, "failed": []}
+```
+Command: curl.exe -X POST -F "file=@products.csv" http://localhost:8000/upload 
 
-Observation: All 20 items passed the integrity and business rules (Price $\le$ MRP, Quantity $\ge$ 0)
+Output: JSON{"stored": 20, "failed": []}
 
-2. Product Listing with Pagination
+```
+
+**Observation**: All 20 items passed the integrity and business rules (Price $\le$ MRP, Quantity $\ge$ 0)
+
+**2. Product Listing with Pagination**
 
 The API efficiently handles large datasets using limit and page parameters
 
-3.Command: curl.exe "http://localhost:8000/products?page=1&limit=2"
+**3.Command:**
 
+ curl.exe "http://localhost:8000/products?page=1&limit=2"
+
+```
 Output:JSON[
   {
     "sku": "TSHIRT-001",
@@ -156,18 +164,40 @@ Output:JSON[
     "quantity": 20
   }
 ]
+```
 
-3. Advanced Filtering (Search)
 
-Verified that multiple filters (Brand + Price Range) can be applied simultaneously4444.
+3. Advanced Filtering 
 
-Command: curl.exe "http://localhost:8000/products/search?brand=BloomWear&maxPrice=2500" 5
+Verified that multiple filters (Brand + Price Range) can be applied simultaneously.
 
-[
-  {"sku":"DRESS-PNK-S","name":"Floral Summer Dress","brand":"BloomWear","color":"Pink","size":"S","mrp":2499.0,"price":2199.0,"quantity":10},
-  {"sku":"DRESS-YLW-M","name":"Floral Summer Dress","brand":"BloomWear","color":"Yellow","size":"M","mrp":2499.0,"price":1999.0,"quantity":7}
-]
-## 🧪 Quality Assurance
+Command: curl.exe "http://localhost:8000/products/search?brand=BloomWear&maxPrice=2500" 
+
+
+```
+**Output:JSON**[
+  {"sku":"DRESS-PNK-S",
+  "name":"Floral Summer Dress",
+  "brand":"BloomWear",
+  "color":"Pink",
+  "size":"S",
+  "mrp":2499.0,
+  "price":2199.0,
+  "quantity":10},
+
+  {"sku":"DRESS-YLW-M",
+  "name":"Floral Summer Dress",
+  "brand":"BloomWear",
+  "color":"Yellow",
+  "size":"M",
+  "mrp":2499.0,
+  "price":1999.0,
+  "quantity":7}]
+```
+
+
+---
+## Quality Assurance
 
 Quality and reliability are central to this implementation. I have included a comprehensive unit test suite to verify the CSV parser, validation logic, and search functionality.
 
@@ -180,4 +210,4 @@ pytest app/tests.py
 
 ---
 
->>>>>>> 28437cd (Complete implementation: APIs, Validation, Tests, and Docker)
+
